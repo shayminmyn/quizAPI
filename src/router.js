@@ -96,6 +96,9 @@ router.delete('/questions/:id',async (req, res) => {
     }
 })
 
+router.get('/', async (req, res) =>{
+    res.send('Hello Min')
+})
 
 module.exports = router
 
