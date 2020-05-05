@@ -1,9 +1,22 @@
 const mongoose = require('mongoose')
 
 const QuestionSchema = new mongoose.Schema({
-    type: String,
-    level: String,
-    content: String,
+    type:{
+        type:String,
+        required: true
+    },
+    level:{
+            type:String,
+            required: true
+        },
+    content:{
+        type:String,
+        required:true
+    },
+    description: {
+        type:String,
+        required: true
+    },
     answers: [
         {
             text: {

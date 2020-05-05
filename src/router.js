@@ -13,11 +13,13 @@ router.get('/questions', async (req, res) => {
 
 })
 
-//get by type
-router.get('/questions/:type', async (req, res) => {
+//get by level and content
+router.get('/questions/key', async (req, res) => {
     try {
-        const type = res.params.type
-        const questions = await Question.find({'type':type})
+        const level = req.query.level
+        const content = req.query.content
+        
+        const questions = await Question.find({'level':level,'content':content})
         return res.status(200).json(questions)
     } catch (error) {
         return res.status(500).json({'error':error})
@@ -37,17 +39,21 @@ router.get('/questions/:id', async (req, res) =>{
     }
 })
 
-//create one
+//create many
 router.post('/questions', async (req, res) => {
     try {
         const data = req.body
 
-        console.log(data)
-        const question = await Question.create({
-            data
-        })
+        // for(let i=0;i<data.length;i++){
+        //     console.log(data[i])
+        //     const question = new Question(
+        //         data[i]
+        //     )
+        //     await question.save()
+        // }
+        const questions = await Question.create(data)
 
-        return res.status(201).json(question)
+        return res.status(201).json(questions)
     } catch (error) {
         return res.status(500).json({"error":error})
     }
@@ -67,10 +73,7 @@ router.put('/questions/:id', async (req, res) => {
             })    
             return res.status(201).json(question)
         }else{
-            question.type = data.type
-            question.level = data.level
-            question.content = data.content
-            question.answers = data.answers
+            question = data
             await question.save()
             return res.status(200).json(question)
         }
