@@ -105,7 +105,7 @@ router.get('/leaderboard', async ( req, res) => {
         const level = req.query.level
         const content = req.query.content
 
-        const leaderboard = await LeaderBoard.find({'level':level,'content':content})
+        const leaderboard = await LeaderBoard.findOne({'level':level,'content':content})
 
         return res.status(200).json(leaderboard)
     } catch (error) {
