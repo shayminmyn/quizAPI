@@ -66,7 +66,7 @@ router.put('/questions/:id', async (req, res) => {
         const id = req.params.id 
         const data = req.body
 
-        let question = await Question.findOne({id})
+        let question = await Question.find({"_id":id})
 
         if(!question){
             question = await Question.create({
@@ -99,10 +99,14 @@ router.delete('/questions/:id',async (req, res) => {
         return res.status(500).json({"error":error})
     }
 })
-//get leaderboard
+//get leaderboard url like /leaderboard?level=...&content=...
 router.get('/leaderboard', async ( req, res) => {
     try {
-        const leaderboard = await LeaderBoard.find();
+        const level = req.query.level
+        const content = req.query.content
+
+        const leaderboard = await LeaderBoard.find({'level':level,'content':content})
+
         return res.status(200).json(leaderboard)
     } catch (error) {
         return res.status(500).json({'error':error})
@@ -112,10 +116,43 @@ router.get('/leaderboard', async ( req, res) => {
 router.post('/leaderboard', async ( req, res) => {
     try {
         const data = req.body
-        
+
         const leaderboard = await LeaderBoard.create(data)
 
         return res.status(201).json(leaderboard)
+    } catch (error) {
+        return res.status(500).json({'error':error})
+    }
+})
+//update leaderboard url like /leaderboard?level=...&content=...
+router.put('/leaderboard/:id', async ( req, res) => {
+    try {
+        const id = req.params.id
+        const data = req.body
+
+        let leaderboard = await LeaderBoard.findOne({"_id":id})
+
+        if(!leaderboard){
+            leaderboard = await LeaderBoard.create(data)
+            return res.status(201).json(leaderboard)
+        }else{
+            leaderboard.board = data.board
+            await leaderboard.save()
+            return res.status(200).json(leaderboard)
+        }
+    } catch (error) {
+        return res.status(500).json({'error':error})
+    }
+})
+//delete leaderboard url like /leaderboard?level=...&content=...
+router.delete('/leaderboard', async (req, res) => {
+    try {
+        const level = req.query.level
+        const content = req.query.content
+
+        const leaderboard = await LeaderBoard.findByIdAndDelete({'level':level,'content':content})
+
+        return res.status(203).json(leaderboard)
     } catch (error) {
         return res.status(500).json({'error':error})
     }
