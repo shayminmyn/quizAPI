@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const Question = require('./models/question')
+const LeaderBoard = require('./models/leaderboard')
 
 //get all
 router.get('/questions', async (req, res) => {
@@ -96,6 +97,27 @@ router.delete('/questions/:id',async (req, res) => {
         }
     } catch (error) {
         return res.status(500).json({"error":error})
+    }
+})
+//get leaderboard
+router.get('/leaderboard', async ( req, res) => {
+    try {
+        const leaderboard = await LeaderBoard.find();
+        return res.status(200).json(leaderboard)
+    } catch (error) {
+        return res.status(500).json({'error':error})
+    }
+})
+//create leaderboard
+router.post('/leaderboard', async ( req, res) => {
+    try {
+        const data = req.body
+        
+        const leaderboard = await LeaderBoard.create(data)
+
+        return res.status(201).json(leaderboard)
+    } catch (error) {
+        return res.status(500).json({'error':error})
     }
 })
 
