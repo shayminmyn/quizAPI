@@ -1,5 +1,5 @@
 const mongooes = require('mongoose');
-const mongoDB = 'mongodb://localhost:27017/Quiz'
+const mongoDB = 'mongodb+srv://shaymin:9899@cluster0-hgfdj.mongodb.net/test?retryWrites=true&w=majority/Quiz'
 
 
 
