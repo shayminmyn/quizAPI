@@ -1,11 +1,11 @@
 const mongooes = require('mongoose');
-const mongoDB = 'mongodb+srv://shaymin:9899@cluster0-hgfdj.mongodb.net/test?retryWrites=true&w=majority/Quiz'
+const mongoDB = 'mongodb+srv://shaymin:9899@cluster0-hgfdj.mongodb.net/test?retryWrites=true&w=majority'
 
 
 
 
 function getConnect(){
-    mongooes.connect(mongoDB,{ useNewUrlParser: true,useUnifiedTopology: true,useCreateIndex: true });
+    mongooes.connect(mongoDB || process.env.MONGODB_URL,{ useNewUrlParser: true,useUnifiedTopology: true,useCreateIndex: true });
     
     mongooes.Promise = global.Promise;
 
